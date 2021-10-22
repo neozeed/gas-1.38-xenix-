@@ -56,7 +56,8 @@ G0 = -I.
 # and un-comment the next two lines.  (If you are using GCC, comment out the
 # alloca.o part) (Get alloca from the emacs distribution, or use GCC.)
 G0 = -O -I. -DUSG -DWORKING_DOT_WORD
-LOADLIBES = alloca.o -lmalloc
+#LOADLIBES = alloca.o -lmalloc
+LOADLIBES = 
 
 # If you just want to compile the vax assembler, type 'make avax'
 

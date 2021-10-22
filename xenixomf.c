@@ -1,7 +1,9 @@
 #include <string.h>
 #include <stdio.h>
+#define M_XENIX 1
 #include "xenixomf.h"
 #include "msomf.h"
+
 
 #ifdef M_XENIX
 #  undef i386
@@ -603,7 +605,7 @@ struct comment {
 #define NUMFIXEDCOMMENTS 4
 
 static unsigned char gas_comment[] = "gas-1.38.1a";
-static unsigned char lib_comment[] = "SLIBCE";
+static unsigned char lib_comment[] = "LIBCRT";
 static unsigned char model_comment[] = "3s";
 static unsigned char msext_comment[] = {1, 0x43, 0x56};
 

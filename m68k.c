@@ -1,8 +1,3 @@
-#if defined(m68851) || defined(m68030) || defined(m68040)
-#define MMU
-#else
-#undef MMU
-#endif
 /* m68k.c  All the m68020 specific stuff in one convenient, huge,
    slow to compile, easy to find file.
    Copyright (C) 1987 Free Software Foundation, Inc.
@@ -35,7 +30,6 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #include "hash.h"
 #include "md.h"
 #include "m68k.h"
-char *index();
 
 #ifdef M_SUN
 /* This variable contains the value to write out at the beginning of
@@ -303,8 +297,6 @@ apc@(num8,reg:sz:scale)		--> *(apc+num8+reg*scale)
 #define BAC	(BAD+8)		/* 64,65,66,67, 68,69,70,71 */
 #define PSR	(BAC+8)		/* 72 */
 #define PCSR	(PSR+1)		/* 73 */
-#define TT0	(PCSR+1)	/* 74 */
-#define TT1	(TT0+1)		/* 75 */
 
 
 /* Note that COPNUM==processor #1 -- COPNUM+7==#8, which stores as 000 */
@@ -453,8 +445,7 @@ register char **ccp;
 	register char c1,
 		c2,
 		c3,
-		c4,
-		c5;
+		c4;
 	register int n = 0,
 		ret = FAIL;
 
@@ -466,12 +457,10 @@ register char **ccp;
 	c2=mklower(ccp[0][2]);
 	c3=mklower(ccp[0][3]);
 	c4=mklower(ccp[0][4]);
-	c5=mklower(ccp[0][5]);
 #else
 	c2=mklower(ccp[0][1]);
 	c3=mklower(ccp[0][2]);
 	c4=mklower(ccp[0][3]);
-	c5=mklower(ccp[0][4]);
 #endif
 	switch(c1) {
 	case 'a':
@@ -479,14 +468,14 @@ register char **ccp;
 			n=2;
 			ret=ADDR+c2-'0';
 		}
-#ifdef MMU
+#ifdef m68851
 		else if (c2 == 'c') {
 			n = 2;
 			ret = AC;
 		}
 #endif
 		break;
-#ifdef MMU
+#ifdef m68851
 	case 'b':
 		if (c2 == 'a') {
 			if (c3 == 'd') {
@@ -505,7 +494,7 @@ register char **ccp;
 		break;
 #endif
 	case 'c':
-#ifdef MMU
+#ifdef m68851
 		if (c2 == 'a' && c3 == 'l') {
 			n = 3;
 			ret = CAL;
@@ -522,7 +511,7 @@ register char **ccp;
 			n=4;
 			ret = c3=='a' ? CAAR : CACR;
 		}
-#ifdef MMU
+#ifdef m68851
 		else if (c2 == 'r' && c3 == 'p') {
 			n = 3;
 			ret = (CRP);
@@ -537,7 +526,7 @@ register char **ccp;
 			n=3;
 			ret = DFC;
 		}
-#ifdef MMU
+#ifdef m68851
 		else if (c2 == 'r' && c3 == 'p') {
 			n = 3;
 			ret = (DRP);
@@ -573,15 +562,11 @@ register char **ccp;
 		if(c2=='s' && c3=='p') {
 			n=3;
 			ret = MSP;
-		} else
-		if (c2 == 'm' && c3 == 'u' && c4 =='s' && c5 == 'r') {
-			n = 5;
-			ret = PSR;
 		}
 		break;
 	case 'p':
 		if(c2=='c') {
-#ifdef MMU
+#ifdef m68851
 			if(c3 == 's' && c4=='r') {
 				n=4;
 				ret = (PCSR);
@@ -592,7 +577,7 @@ register char **ccp;
 				ret = PC;
 			}
 		}
-#ifdef MMU
+#ifdef m68851
 		else if (c2 == 's' && c3 == 'r') {
 			n = 3;
 			ret = (PSR);
@@ -600,7 +585,7 @@ register char **ccp;
 #endif
 		break;
 	case 's':
-#ifdef MMU
+#ifdef m68851
 		if (c2 == 'c' && c3 == 'c') {
 			n = 3;
 			ret = (SCC);
@@ -620,14 +605,11 @@ register char **ccp;
 			ret = SFC;
 		}
 		break;
-#ifdef MMU
+#ifdef m68851
 	case 't':
 		if(c2 == 'c') {
 			n=2;
 			ret=TC;
-		} else if (c2 == 't' && (c3 == '0' || c3 == '1')) {
-			n=3;
-			ret= (c3 == '0') ? TT0 : TT1;
 		}
 		break;
 #endif
@@ -638,7 +620,7 @@ register char **ccp;
 		}
 		break;
 	case 'v':
-#ifdef MMU
+#ifdef m68851
 		if (c2 == 'a' && c3 == 'l') {
 			n = 3;
 			ret = (VAL);
@@ -704,6 +686,7 @@ register struct m68k_op *opP;
 	i=m68k_reg_parse(&str);
 	if((i==FAIL || *str!='\0') && *str!='@') {
 		char *stmp;
+		char *index();
 
 		if(i!=FAIL && (*str=='/' || *str=='-')) {
 			opP->mode=REGLST;
@@ -1303,7 +1286,7 @@ char	*instring;
 			/* JF these are out of order.  We could put them
 			   in order if we were willing to put up with
 			   bunches of #ifdef m68851s in the code */
-#ifdef MMU
+#ifdef m68851
 			/* Memory addressing mode used by pflushr */
 			case '|':
 				if(opP->mode==MSCR || opP->mode==DREG ||
@@ -1349,10 +1332,6 @@ char	*instring;
 				if (opP->reg != PCSR)
 					losing++;
 				break;
-			case '3':
-				if (opP->reg != TT0 && opP->reg != TT1)
-					losing++;
-				break;
 #endif
 			default:
 				as_fatal("Internal error:  Operand mode %c unknown",*s);
@@ -1388,7 +1367,7 @@ char	*instring;
 		case '$':
 		case '?':
 		case '/':
-#ifdef MMU
+#ifdef m68851
 		case '|':
 #endif
 			switch(opP->mode) {
@@ -2028,7 +2007,7 @@ char	*instring;
 		case 'U':	/* Ignore it */
 			break;
 
-#ifdef MMU
+#ifdef m68851
 			/* JF: These are out of order, I fear. */
 		case 'f':
 			switch (opP->reg) {
@@ -2116,21 +2095,7 @@ char	*instring;
 			if (opP->reg == PCSR)
 				break;
 			abort();
-
-		case '3':
-			switch (opP->reg) {
-			case TT0:
-			  tmpreg = 2;
-			  break;
-			case TT1:
-			  tmpreg = 3;
-			  break;
-			default:
-			  abort();
-			}
-			install_operand(s[1], tmpreg);
-			break;
-#endif /* MMU */
+#endif /* m68851 */
 		default:
 			as_fatal("Internal error:  Operand type %c unknown",s[0]);
 		}
@@ -2268,7 +2233,7 @@ int val;
 	case '8':
 		the_ins.opcode[1]|=val<<10;
 		break;
-#ifdef MMU
+#ifdef m68851
 	case '9':
 		the_ins.opcode[1]|=val<<5;
 		break;
@@ -2885,14 +2850,14 @@ register fragS *fragP;
     break;
   case TAB(PCLEA,SHORT):
     subseg_change(SEG_TEXT,0);
-    fix_new(fragP,(int)(fragP->fr_fix),2,fragP->fr_symbol,(symbolS *)0,fragP->fr_offset+2,1);
+    fix_new(fragP,(int)(fragP->fr_fix),2,fragP->fr_symbol,(symbolS *)0,fragP->fr_offset,1);
     fragP->fr_opcode[1] &= ~0x3F;
     fragP->fr_opcode[1] |= 0x3A;
     ext=2;
     break;
   case TAB(PCLEA,LONG):
     subseg_change(SEG_TEXT,0);
-    fix_new(fragP,(int)(fragP->fr_fix)+2,4,fragP->fr_symbol,(symbolS *)0,fragP->fr_offset+2+4,1);
+    fix_new(fragP,(int)(fragP->fr_fix)+2,4,fragP->fr_symbol,(symbolS *)0,fragP->fr_offset+2,1);
     *buffer_address++ = 0x01;
     *buffer_address++ = 0x70;
     fragP->fr_fix+=2;

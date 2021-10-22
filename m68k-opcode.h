@@ -1568,11 +1568,6 @@ struct m68k_opcode m68k_opcodes[] =
 {"pmove",	two(0xf000, 0x6200),	two(0xffc0, 0xffff),	"Y8%s" },
 {"pmove",	two(0xf000, 0x6600),	two(0xffc0, 0xffff),	"Z8%s" },
 
-/* TT0/AC0, TT1/AC1 */
-{"pmove",	two(0xf000, 0x0800),	two(0xffc0, 0xfbff),	"*s38" },
-{"pmove",	two(0xf000, 0x0a00),	two(0xffc0, 0xfbff),	"38%s" },
-
-
 {"prestore",	one(0xf140),		one(0xffc0),		"&s"},
 {"prestore",	one(0xf158),		one(0xfff8),		"+s"},
 {"psave",	one(0xf100),		one(0xffc0),		"&s"},

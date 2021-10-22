@@ -40,6 +40,8 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 static relax_addressT	relax_align();
 
+#define M_XENIX 1
+
 #ifndef M_XENIX
 #ifdef SPARC
 #include "sparc.h"
@@ -50,10 +52,8 @@ static relax_addressT	relax_align();
 
 void	append();
 
-#if 0
 #ifdef hpux
 #define EXEC_MACHINE_TYPE HP9000S200_ID
-#endif
 #endif
 
 #ifdef DOT_LABEL_PREFIX

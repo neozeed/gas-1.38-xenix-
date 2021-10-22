@@ -50,6 +50,11 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define SIGTY int
 #endif
 
+#ifdef _WIN32
+#define SIGHUP 0
+#define SIGPIPE 0
+#endif
+
 SIGTY got_sig();
 
 #ifdef DONTDEF

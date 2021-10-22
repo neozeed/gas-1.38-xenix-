@@ -41,14 +41,13 @@ SEE ALSO
 */
 #ifdef USG
 #include <malloc.h>
-#else
-#include <stdlib.h>
 #endif
 
 char * xmalloc(n)
      long n;
 {
   char *	retval;
+//  char *	malloc();
   void	error();
 
   if ( ! (retval = malloc ((unsigned)n)) )

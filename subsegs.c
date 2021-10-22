@@ -28,6 +28,8 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #include "struc-symbol.h"
 #include "write.h"
 
+#define M_XENIX 1
+
 frchainS*	frchain_root,
 	*	frchain_now,	/* Commented in "subsegs.h". */
 	*	data0_frchainP;

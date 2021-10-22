@@ -19,6 +19,7 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 #include <stdio.h>		/* define stderr */
 #include <errno.h>	/* Need this to make errno declaration right */
+#include <stdlib.h>
 #ifdef	VMS
 #include <errno.h>	/* Need this to make errno declaration right */
 #include <perror.h>	/* Need this to make sys_errlist/sys_nerr right */
@@ -27,7 +28,7 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #include "as.h"
 
 #ifndef NO_VARARGS
-#include "varargs.h"
+#include <varargs.h>
 #endif
 
 /*
@@ -72,7 +73,7 @@ as_perror(gripe, filename)
      char *	gripe;		/* Unpunctuated error theme. */
      char *	filename;
 {
-#if 0
+#if _WIN32
   extern int errno;		/* See perror(3) for details. */
   extern int sys_nerr;
   extern char * sys_errlist[];

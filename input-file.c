@@ -140,7 +140,7 @@ input_file_open (filename, preprocess, debugging)
       if (pid == 0)
 	{
 	  (void)dup2 (file_handle, fileno(stdin));
-	  fd = open (temporary_file_name, O_WRONLY + O_TRUNC + O_CREAT, 0666);
+	  fd = open (temporary_file_name, O_WRONLY + O_TRUNC + O_CREAT + O_BINARY, 0666);
 	  if (fd == -1)
 	    {
 	      (void)write(2,"Can't open temporary\n",21);
@@ -196,7 +196,9 @@ input_file_open (filename,pre)
 		return;
 	}
 #ifndef VMS
+#ifndef _WIN32
 	setbuffer(f_in,in_buf,BUFFER_SIZE);
+#endif
 #endif /* VMS */
 	c=getc(f_in);
 	if(c=='#') {	/* Begins with comment, may not want to preprocess */

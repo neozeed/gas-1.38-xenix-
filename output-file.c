@@ -38,7 +38,7 @@ output_file_create (name)
 {
   if(name[0]=='-' && name[1]=='\0')
     stdoutput=stdout;
-  else if ( ! (stdoutput = fopen( name, "w" )) )
+  else if ( ! (stdoutput = fopen( name, "wb" )) )
     {
       as_perror ("FATAL: Can't create %s", name);
       exit(42);
