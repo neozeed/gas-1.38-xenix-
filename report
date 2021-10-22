@@ -1,0 +1,95 @@
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c as.c
+	cc -c -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -Derror=as_fatal xrealloc.c
+	cc -c -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -Derror=as_fatal xmalloc.c
+	cc -c -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -Derror=as_fatal hash.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c hex-value.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c atof-generic.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c append.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c messages.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c expr.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c app.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c frags.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c input-file.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c input-scrub.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c output-file.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c subsegs.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c symbols.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c version.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c flonum-const.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c flonum-copy.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c flonum-mult.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c strstr.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c bignum-copy.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c obstack.c
+Make:  Don't know how to make m68k.h.  Stop.
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c m68k.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c atof-ieee.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c read.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c write.c
+cc: "write.c", line 579: error 1588: "a_machtype" undefined.
+cc: "write.c", line 579: error 1531: Invalid member of struct or union.
+cc: "write.c", line 579: error 1527: Incompatible types in cast.
+cc: "write.c", line 579: error 1588: "HP9000S200_ID" undefined.
+cc: "write.c", line 579: error 1531: Invalid member of struct or union.
+*** Error code 1
+
+Stop.
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c write.c
+	cc -o a68 -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      as.o		xrealloc.o	xmalloc.o	hash.o		hex-value.o  atof-generic.o	append.o	messages.o	expr.o		app.o  frags.o		input-file.o	input-scrub.o	output-file.o	  subsegs.o	symbols.o					version.o  flonum-const.o	flonum-copy.o	flonum-mult.o	strstr.o	bignum-copy.o  obstack.o  m68k.o		atof-ieee.o read.o write.o /net/acae127/home/bammi/lib.hp-ux/alloca.o /net/acae127/home/bammi/lib.hp-ux/malloc_new6.o
+/bin/ld: Unsatisfied symbols:
+   setbuffer (code)
+*** Error code 1
+
+Stop.
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c as.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c messages.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c expr.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c app.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c frags.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c input-scrub.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c subsegs.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c symbols.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c m68k.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c read.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c write.c
+	cc -o a68 -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      as.o		xrealloc.o	xmalloc.o	hash.o		hex-value.o  atof-generic.o	append.o	messages.o	expr.o		app.o  frags.o		input-file.o	input-scrub.o	output-file.o	  subsegs.o	symbols.o					version.o  flonum-const.o	flonum-copy.o	flonum-mult.o	strstr.o	bignum-copy.o  obstack.o  m68k.o		atof-ieee.o read.o write.o /net/acae127/home/bammi/lib.hp-ux/alloca.o /net/acae127/home/bammi/lib.hp-ux/malloc_new6.o
+/bin/ld: Unsatisfied symbols:
+   setbuffer (code)
+*** Error code 1
+
+Stop.
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c as.c
+	cc -c -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -Derror=as_fatal xrealloc.c
+	cc -c -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -Derror=as_fatal xmalloc.c
+	cc -c -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -Derror=as_fatal hash.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c hex-value.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c atof-generic.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c append.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c messages.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c expr.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c app.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c frags.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c input-file.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c input-scrub.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c output-file.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c subsegs.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c symbols.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c version.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c flonum-const.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c flonum-copy.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c flonum-mult.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c strstr.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c bignum-copy.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c obstack.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c m68k.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c atof-ieee.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c read.c
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c write.c
+	cc -o a68 -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      as.o		xrealloc.o	xmalloc.o	hash.o		hex-value.o  atof-generic.o	append.o	messages.o	expr.o		app.o  frags.o		input-file.o	input-scrub.o	output-file.o	  subsegs.o	symbols.o					version.o  flonum-const.o	flonum-copy.o	flonum-mult.o	strstr.o	bignum-copy.o  obstack.o  m68k.o		atof-ieee.o read.o write.o /net/acae127/home/bammi/lib.hp-ux/alloca.o /net/acae127/home/bammi/lib.hp-ux/malloc_new6.o
+/bin/ld: Unsatisfied symbols:
+   setbuffer (code)
+*** Error code 1
+
+Stop.
+	cc -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      -c input-file.c
+	cc -o a68 -O +Obb1000 -DUSE_C_ALLOCA -DCROSSHPUX -I. -DCROSSATARI=1   -Dm68851  -DSIGTY=void      as.o		xrealloc.o	xmalloc.o	hash.o		hex-value.o  atof-generic.o	append.o	messages.o	expr.o		app.o  frags.o		input-file.o	input-scrub.o	output-file.o	  subsegs.o	symbols.o					version.o  flonum-const.o	flonum-copy.o	flonum-mult.o	strstr.o	bignum-copy.o  obstack.o  m68k.o		atof-ieee.o read.o write.o /net/acae127/home/bammi/lib.hp-ux/alloca.o /net/acae127/home/bammi/lib.hp-ux/malloc_new6.o

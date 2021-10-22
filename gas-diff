@@ -1,0 +1,325 @@
+diff -c -r gas-1.38/app.c cross-gas-1.38/app.c
+*** gas-1.38/app.c	Thu Oct 11 12:26:17 1990
+--- cross-gas-1.38/app.c	Mon Jan 21 18:52:45 1991
+***************
+*** 74,80 ****
+--- 74,86 ----
+  int
+  scrub_from_file()
+  {
++ #ifdef atarist
++ 	int c;
++ 	if((c = getc(scrub_file)) == '\r') c = getc(scrub_file);
++ 	return c;
++ #else
+  	return getc(scrub_file);
++ #endif
+  }
+  
+  void
+diff -c -r gas-1.38/as.c cross-gas-1.38/as.c
+*** gas-1.38/as.c	Thu Oct 11 12:26:17 1990
+--- cross-gas-1.38/as.c	Mon Jan 21 18:52:45 1991
+***************
+*** 81,86 ****
+--- 81,89 ----
+  		if(signal(sig[a], SIG_IGN) != SIG_IGN)
+  			signal(sig[a], got_sig);
+  
++ #ifdef atarist
++ 	_binmode(1);
++ #endif
+  	myname=argv[0];
+  	bzero (flagseen, sizeof(flagseen)); /* aint seen nothing yet */
+  	out_file_name	= "a.out";	/* default .o file */
+diff -c -r gas-1.38/expr.c cross-gas-1.38/expr.c
+*** gas-1.38/expr.c	Fri Jan  4 13:13:00 1991
+--- cross-gas-1.38/expr.c	Tue Feb  5 18:48:54 1991
+***************
+*** 527,535 ****
+         * It is faster to re-cancel them to NULL
+         * than to check for this special case.
+         */
+!       if (expressionP -> X_subtract_symbol == expressionP -> X_add_symbol
+!           || (   expressionP->X_subtract_symbol->sy_frag==expressionP->X_add_symbol->sy_frag
+! 	      && expressionP->X_subtract_symbol->sy_value==expressionP->X_add_symbol->sy_value))
+  	{
+  	  expressionP -> X_subtract_symbol	= NULL;
+  	  expressionP -> X_add_symbol		= NULL;
+--- 527,533 ----
+         * It is faster to re-cancel them to NULL
+         * than to check for this special case.
+         */
+!       if (expressionP -> X_subtract_symbol == expressionP -> X_add_symbol)
+  	{
+  	  expressionP -> X_subtract_symbol	= NULL;
+  	  expressionP -> X_add_symbol		= NULL;
+diff -c -r gas-1.38/input-file.c cross-gas-1.38/input-file.c
+*** gas-1.38/input-file.c	Fri Jan  4 13:12:57 1991
+--- cross-gas-1.38/input-file.c	Mon Jan 21 18:52:55 1991
+***************
+*** 59,65 ****
+--- 59,100 ----
+  
+  #define BUFFER_SIZE (32 * 1024)
+  
++ #ifdef atarist
++ /* a little ditty here to do fread, filtering out '\r'. */
++ 
++ int filtering_fread(where, how_big, how_many, f)
++ char * where;
++ int how_big;
++ int how_many;
++ FILE * f;
++ {
++   int i, j, c;
++ 
++   for (i = 0 ; i < how_many ; )
++ 	{
++ 	for (j = 0 ; j < how_big ; )
++ 		{
++ 		c = fgetc(f);
++ 		if (c == EOF)
++ 			goto done;
++ 		if (c != '\r')
++ 			{
++ 			*where++ = c;
++ 			j++;
++ 			}
++ 		}
++ 	i++;
++ 	}
++ done:
++   return(i);
++ }
++  
++ #else
++  
+  static char in_buf[BUFFER_SIZE];
++   
++ #endif
++  
+  
+  /*
+   * We use static data: the data area is not sharable.
+***************
+*** 195,206 ****
+  		as_perror ("Can't open %s for reading", file_name);
+  		return;
+  	}
+! #ifndef VMS
+  	setbuffer(f_in,in_buf,BUFFER_SIZE);
+  #endif /* VMS */
+  	c=getc(f_in);
+  	if(c=='#') {	/* Begins with comment, may not want to preprocess */
+  		c=getc(f_in);
+  		if(c=='N') {
+  			fgets(buf,80,f_in);
+  			if(!strcmp(buf,"O_APP\n"))
+--- 230,247 ----
+  		as_perror ("Can't open %s for reading", file_name);
+  		return;
+  	}
+! #if (!(defined(VMS) || defined(atarist) || defined(atariminix)))
+  	setbuffer(f_in,in_buf,BUFFER_SIZE);
+  #endif /* VMS */
+  	c=getc(f_in);
++ #ifdef atarist
++ 	if(c == '\r') c = getc(f_in);
++ #endif
+  	if(c=='#') {	/* Begins with comment, may not want to preprocess */
+  		c=getc(f_in);
++ #ifdef atarist
++ 		if(c == '\r') c = getc(f_in);
++ #endif
+  		if(c=='N') {
+  			fgets(buf,80,f_in);
+  			if(!strcmp(buf,"O_APP\n"))
+***************
+*** 274,280 ****
+  	}
+  	size=BUFFER_SIZE-n;
+    } else
+! 	size= fread(where,sizeof(char),BUFFER_SIZE,f_in);
+    if (size < 0)
+      {
+        as_perror ("Can't read from %s", file_name);
+--- 315,325 ----
+  	}
+  	size=BUFFER_SIZE-n;
+    } else
+! #ifdef atarist
+!   size= filtering_fread(where,sizeof(char),BUFFER_SIZE,f_in);
+! #else
+!   size= fread(where,sizeof(char),BUFFER_SIZE,f_in);
+! #endif
+    if (size < 0)
+      {
+        as_perror ("Can't read from %s", file_name);
+diff -c -r gas-1.38/input-scrub.c cross-gas-1.38/input-scrub.c
+*** gas-1.38/input-scrub.c	Fri Jan  4 13:12:58 1991
+--- cross-gas-1.38/input-scrub.c	Mon Jan 21 18:52:56 1991
+***************
+*** 54,60 ****
+--- 54,64 ----
+  static char *	buffer_start;	/* -> 1st char of full buffer area. */
+  static char *	partial_where;	/* -> after last full line in buffer. */
+  static int	partial_size;	/* >=0. Number of chars in partial line in buffer. */
++ #if (defined(atarist) || defined(atariminix))
++ static char	save_source [2];	/* odd num fucks alignment? */
++ #else
+  static char	save_source [AFTER_SIZE];
++ #endif
+  				/* Because we need AFTER_STRING just after last */
+  				/* full line, it clobbers 1st part of partial */
+  				/* line. So we preserve 1st part of partial */
+diff -c -r gas-1.38/m68k-opcode.h cross-gas-1.38/m68k-opcode.h
+*** gas-1.38/m68k-opcode.h	Wed Aug  1 14:49:19 1990
+--- cross-gas-1.38/m68k-opcode.h	Mon Jan 21 18:52:58 1991
+***************
+*** 628,633 ****
+--- 628,634 ----
+  {"trapvc",	one(0054374),		one(0177777),		""},
+  {"trapvs",	one(0054774),		one(0177777),		""},
+  
++ #if (!(CROSSATARI || atarist || atariminix))
+  {"trapcc.w",	one(0052372),		one(0177777),		""},
+  {"trapcs.w",	one(0052772),		one(0177777),		""},
+  {"trapeq.w",	one(0053772),		one(0177777),		""},
+***************
+*** 662,667 ****
+--- 663,670 ----
+  {"trapvc.l",	one(0054373),		one(0177777),		""},
+  {"trapvs.l",	one(0054773),		one(0177777),		""},
+  
++ #endif /* !(CROSSATARI || atarist || atariminix) */
++ 
+  {"trapv",	one(0047166),		one(0177777),		""},
+  
+  {"tstb",	one(0045000),		one(0177700),		";b"},
+***************
+*** 1385,1391 ****
+--- 1388,1396 ----
+  
+  /* Alternate mnemonics for SUN */
+  
++ #if (!(CROSSATARI || atarist || atariminix))
+  {"jbsr",	one(0060400),		one(0177400),		"Bg"},
++ #endif
+  {"jbsr",	one(0047200),		one(0177700),		"!s"},
+  {"jra",		one(0060000),		one(0177400),		"Bg"},
+  {"jra",		one(0047300),		one(0177700),		"!s"},
+diff -c -r gas-1.38/m68k.c cross-gas-1.38/m68k.c
+*** gas-1.38/m68k.c	Tue Dec  4 15:50:00 1990
+--- cross-gas-1.38/m68k.c	Wed Feb  6 09:52:38 1991
+***************
+*** 1258,1265 ****
+  					long t;
+  
+  					t=get_num(opP->con1,80);
+! 					if(t<1 || t>8 || isvar(opP->con1))
+! 						losing++;
+  				}
+  				break;
+  
+--- 1258,1271 ----
+  					long t;
+  
+  					t=get_num(opP->con1,80);
+! 					if (s[1]!='s') {
+! 						if(t<1 || t>8 || isvar(opP->con1))
+! 							losing++;
+! 					}
+! 					else {
+! 						if(t<0 || t>7 || isvar(opP->con1))
+! 							losing++;
+! 					}
+  				}
+  				break;
+  
+***************
+*** 1474,1480 ****
+  				if(   !issword(nextword)
+  				   || (   isvar(opP->con1)
+  				       && (  (   opP->con1->e_siz==0
+! 					      && flagseen['l']==0)
+  					   || opP->con1->e_siz==3))) {
+  
+  					if(opP->reg==PC)
+--- 1480,1486 ----
+  				if(   !issword(nextword)
+  				   || (   isvar(opP->con1)
+  				       && (  (   opP->con1->e_siz==0
+! 					      && flagseen['l']!=0)
+  					   || opP->con1->e_siz==3))) {
+  
+  					if(opP->reg==PC)
+***************
+*** 1489,1495 ****
+  							break;
+  						} else {
+  							addword(0x0170);
+! 							add_fix('l',opP->con1,1);
+  						}
+  					} else
+  						addword(0x0170);
+--- 1495,1501 ----
+  							break;
+  						} else {
+  							addword(0x0170);
+! 							add_fix('l',opP->con1,0);
+  						}
+  					} else
+  						addword(0x0170);
+***************
+*** 1976,1984 ****
+  			break;
+  
+  		case 'Q':
+! 			tmpreg=get_num(opP->con1,10);
+! 			if(tmpreg==8)
+! 				tmpreg=0;
+  			install_operand(s[1],tmpreg);
+  			break;
+  
+--- 1982,1997 ----
+  			break;
+  
+  		case 'Q':
+! 			if (s[1]!='s') {
+! 				tmpreg=get_num(opP->con1,10);
+! 			  	if(tmpreg==8)
+! 					tmpreg=0;
+! 			}
+! 			else {
+! 				tmpreg=get_num(opP->con1,20);
+! 			  	if(tmpreg==8)
+! 					tmpreg=0;
+! 			}
+  			install_operand(s[1],tmpreg);
+  			break;
+  
+diff -c -r gas-1.38/struc-symbol.h cross-gas-1.38/struc-symbol.h
+*** gas-1.38/struc-symbol.h	Fri Jul  6 14:43:12 1990
+--- cross-gas-1.38/struc-symbol.h	Mon Jan 21 18:52:59 1991
+***************
+*** 18,24 ****
+  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
+  
+  #ifndef		VMS
+! #include "a.out.gnu.h"		/* Needed to define struct nlist. Sigh. */
+  #else
+  #include "a_out.h"
+  #endif
+--- 18,28 ----
+  the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
+  
+  #ifndef		VMS
+! #  if (atarist || atariminix || CROSSATARI)
+! #    include <gnu-out.h>
+! #  else
+! #    include "a.out.gnu.h"		/* Needed to define struct nlist. Sigh. */
+! #  endif
+  #else
+  #include "a_out.h"
+  #endif

@@ -1,0 +1,236 @@
+CROSSDIR = /net/acae127/home/bammi/atari/cross-gcc
+CROSSBIN = $(CROSSDIR)/bin
+CROSSLIB = $(CROSSDIR)/lib
+CROSSINC = $(CROSSDIR)/include
+
+# This makefile may be used to make the VAX, the 68020 the 80386 or the
+# ns32k assembler.
+
+# If you just want to compile the vax assembler, type 'make avax'
+
+# If you just want to compile the mc68020 assembler, make sure m68k.h
+# is correctly set up, and type type 'make a68'  (Except on HPUX machines,
+# where you will have to make the changes marked below before typing
+# 'make a68'
+
+# If you just want to compile the i386 assembler, type 'make a386'
+
+# If you just want to compile the ns32k assembler, type 'make a32k'
+
+# To make the 68020 assembler compile as the default, un-comment the next
+# five lines (the first line starts with a:), and comment out the
+# a: groups for the other assemblers.
+#
+#NOTE:  m68k.h should be a symbolic or hard-link to one of
+# m-sun3.h , m-hpux.h or m-generic.h
+# depending on which machine you want to compile the 68020 assembler for.
+#
+# To compile for HPUX, link m-hpux.h to m68k.h , un-comment the
+# next two lines, and comment out the OPTIONS line below
+# OPTIONS = -I../hp-include -I.
+# LOADLIBES = -lGNU
+#
+
+# If you want the 68k assembler to be completely compatable with the the
+# SUN one, un-comment the -DSUN_ASM_SYNTAX line below.
+#
+# If you machine does not have vfprintf, but does have _doprnt(),
+# remove the # from the -DNO_VARARGS line below.
+#
+# If the return-type of a signal-hander is void (instead of int),
+# remove the # from the -DSIGTY line below.
+#
+# To include the mc68851 mmu coprocessor instructions in the 68020 assembler,
+# remove the # from the -Dm68851 line below.
+#
+# If you want the 68020 assembler use a register prefix character, un-comment
+# the REGISTER_PREFIX line, and (maybe) change the '%' to the appropriate
+# character.
+#
+# If you want the assembler to treat .L* or ..* symbols as local, instead of
+# the usual L* symbols, un-comment the DOT_LABEL_PREFIX line.
+#
+# If you want the 80386 assembler to correctly handle fsub/fsubr and fdiv/fdivr
+# opcodes (unlike most 80386 assemblers), remove the # from
+# the -DNON_BROKEN_WORDS line below.
+#
+# To compile 80386 Gas for the Sequent Symmetry, un-comment the -DEXEC_VERSION
+# and the -DUSE_SYSTEM_HDR lines below.
+#
+# To compile gas for the HP 9000/300 un-comment the -DUSE_HP_HDR line below.
+#
+# For the ns32k, the options are 32532 or 32032 CPU and 32381 or 32081 FPU.
+# To select the NS32532, remove the # from the -DNS32532 line below.
+# To compile in tne NS32381 opcodes in addition to the NS32081 opcodes
+# (the 32381 is a superset of the 32081), remove the # from the -DNS32381
+# line below.
+#
+# For the ns32k on a Sequent, uncomment the SEQUENT_COMPATABILITY line below.
+#
+# If you want the .align N directive to align to the next N byte boundry,
+# instead of the next 1<<N boundry, un-comment the OTHER_ALIGN line below.
+# (This option is automatically enabled when building the sparc assembler.
+#
+O1 = # -DNO_VARARGS
+O2 = # -DNON_BROKEN_WORDS
+O3 = -Dm68851
+O4 = # -DEXEC_VERSION=1
+O5 = -DSIGTY=void
+O6 = # -DNS32532
+O6 = # -DNS32381
+O7 = # -DDOT_LABEL_PREFIX
+O8 = # -DSEQUENT_COMPATABILITY
+O9 = # -DREGISTER_PREFIX=\'%\'
+O10= # -DOTHER_ALIGN
+
+G1 = # -DUSE_SYSTEM_HDR
+G2 = # -DUSE_HP_HDR
+G3 = # -DSUN_ASM_SYNTAX
+
+OPTIONS = -DCROSSATARI=1 $(O1) $(O2) $(O3) $(O4) $(O5) $(O6) $(O7) $(O8) $(O9) $(O10)
+
+a:	a68
+	@rm -f a
+	@ln a68 a
+lint:	lint_68k
+
+# To make the VAX assembler compile as the default, un-comment the next five
+# lines, and comment out the a: group of lines for the other assemblers.
+#OPTIONS =
+#a:	avax
+#	@rm -f a
+#	@ln avax a
+#lint:	lint_vax
+
+# To make the 80386 assembler compile as the default, un-comment the
+# next five lines, and comment out the 'a:' groups for the other assemblers.
+#OPTIONS =
+#a:	a386
+#	@rm -f a
+#	@ln a386 a
+#lint:	lint_386
+
+# To make the ns32k assembler compile as the default, un comment the
+# next five lines, and comment out the 'a:' groups for the other assemblers.
+#OPTIONS =
+#a:	a32k
+#	@rm -f a
+#	@ln a32k a
+#lint:	lint_32k
+#
+
+CC=cc
+CFLAGS = -O -I. $(OPTIONS)
+LDFLAGS = $(CFLAGS)
+# To compile gas on a System Five machine, comment out the two lines above
+# and un-comment out the next three lines
+# CFLAGS = -g -I. -DUSG $(OPTIONS)
+# LDFLAGS = $(CFLAGS)
+# LOADLIBES = -lmalloc -lPW
+
+a =\
+as.o		xrealloc.o	xmalloc.o	hash.o		hex-value.o \
+atof-generic.o	append.o	messages.o	expr.o		app.o \
+frags.o		input-file.o	input-scrub.o	output-file.o	 \
+subsegs.o	symbols.o					version.o \
+flonum-const.o	flonum-copy.o	flonum-mult.o	strstr.o	bignum-copy.o \
+obstack.o 
+
+y =\
+m68k.o		atof-ieee.o read.o write.o
+Y = m68k.c atof-ieee.c m68k-opcode.h m-hpux.h m-sun3.h m-generic.h
+
+
+a68: $a $y
+	$(CC) -o a68 $(LDFLAGS) $a $y $(LOADLIBES)
+
+
+atof-ieee.o:	flonum.h
+
+hash.o:	hash.c
+	$(CC) -c $(CFLAGS) -Derror=as_fatal hash.c
+
+xmalloc.o:	xmalloc.c
+	$(CC) -c $(CFLAGS) -Derror=as_fatal xmalloc.c
+
+xrealloc.o:	xrealloc.c
+	$(CC) -c $(CFLAGS) -Derror=as_fatal xrealloc.c
+
+m68k.o:		gnu-out.h as.h expr.h flonum.h frags.h hash.h
+m68k.o:		m68k-opcode.h m68k.h md.h obstack.h struc-symbol.h 
+
+app.o:		as.h
+
+as.o:		gnu-out.h as.h read.h struc-symbol.h write.h
+atof-generic.o:	flonum.h
+bignum-copy.o:	bignum.h
+expr.o:		gnu-out.h as.h expr.h flonum.h obstack.h read.h struc-symbol.h
+expr.o:		 symbols.h
+flonum-const.o:	flonum.h
+flonum-copy.o:	flonum.h
+flonum-mult.o:	flonum.h
+flonum-normal.o:flonum.h
+flonum-print.o:	flonum.h
+frags.o:	gnu-out.h as.h frags.h obstack.h struc-symbol.h subsegs.h
+hash.o:		hash.h
+input-file.o:	input-file.h
+input-scrub.o:	as.h input-file.h read.h
+messages.o:	as.h
+obstack.o:	obstack.h
+read.o:		gnu-out.h as.h expr.h flonum.h frags.h hash.h md.h obstack.h
+read.o:		read.h struc-symbol.h symbols.h
+subsegs.o:	gnu-out.h as.h frags.h obstack.h struc-symbol.h subsegs.h write.h
+symbols.o:	gnu-out.h as.h frags.h hash.h obstack.h struc-symbol.h symbols.h
+write.o:	gnu-out.h as.h md.h obstack.h struc-symbol.h subsegs.h
+write.o:	symbols.h write.h
+
+flonum.h:					bignum.h
+
+# app is no longer a separate process.
+# app:	app.c
+#	$(CC) -o app app.c
+clean:
+	rm -f a avax a68 a386 $a $w $x $y $z a core gmon.out bugs a.out
+
+oprint:	oprint.o pp.o
+	$(CC) $(LDFLAGS) -o oprint oprint.o pp.o
+
+
+A =\
+as.c		xrealloc.c	xmalloc.c	hash.c		hex-value.c \
+atof-generic.c	append.c	messages.c	expr.c		bignum-copy.c \
+frags.c		input-file.c	input-scrub.c	output-file.c	read.c \
+subsegs.c	symbols.c	write.c				strstr.c \
+flonum-const.c	flonum-copy.c	flonum-mult.c	app.c		version.c \
+obstack.c
+
+B =\
+m68k.c		atof-m68k.c	
+
+H = \
+gnu.out.h		as.h		bignum.h	expr.h		flonum.h \
+frags.h		hash.h		input-file.h	m68k-opcode.h	md.h	 \
+obstack.h	read.h		struc-symbol.h	subsegs.h	i386.h	 \
+symbols.h	vax-inst.h	vax-opcode.h	write.h		i386-opcode.h \
+m-sun3.h	m-generic.h	pmmu.h		m-hpux.h	ns32k-opcode.h
+
+V = \
+make-gas.com objrecdef.h vms.c
+
+# JF unused	flonum-normal.c	flonum-print.c cpystr.c
+
+lint_68k:
+	lint -I. $A $B
+
+
+gas-dist.tar: COPYING README $A $B $C $D $E $H $V Makefile
+	tar cvf gas-dist.tar COPYING README $A $B $C $D $E $H $V Makefile
+
+gas-dist.tar.Z:	gas-dist.tar
+	compress < gas-dist.tar > gas-dist.tar.Z
+
+dist:	gas-dist.tar gas-dist.tar.Z
+
+install: a
+	cp a $(CROSSLIB)/gcc-as
+
