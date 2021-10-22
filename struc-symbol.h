@@ -18,11 +18,7 @@ along with GAS; see the file COPYING.  If not, write to
 the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 #ifndef		VMS
-#  if (atarist || atariminix || CROSSATARI)
-#    include <gnu-out.h>
-#  else
-#    include "a.out.gnu.h"		/* Needed to define struct nlist. Sigh. */
-#  endif
+#include "a.out.gnu.h"		/* Needed to define struct nlist. Sigh. */
 #else
 #include "a_out.h"
 #endif

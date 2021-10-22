@@ -81,12 +81,10 @@ char	**argv;
 		if(signal(sig[a], SIG_IGN) != SIG_IGN)
 			signal(sig[a], got_sig);
 
-#ifdef atarist
-	_binmode(1);
-#endif
 	myname=argv[0];
 	bzero (flagseen, sizeof(flagseen)); /* aint seen nothing yet */
 	out_file_name	= "a.out";	/* default .o file */
+	module_name = "unknown.s";
 	symbol_begin();		/* symbols.c */
 	subsegs_begin();		/* subsegs.c */
 	read_begin();			/* read.c */

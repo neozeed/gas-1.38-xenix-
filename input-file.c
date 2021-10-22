@@ -29,7 +29,7 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #ifdef USG
 #define index strchr
 /* JF:  What's the difference between _IOLBF and _IOFBF ? */
-#define setbuffer(stream, buf, size) setvbuf((stream), (buf), _IOFBF, (size))
+//#define setbuffer(stream, buf, size) setvbuf((stream), (buf), _IOFBF, (size))
 #endif
 
 #include <stdio.h>
@@ -59,42 +59,7 @@ void	as_perror();
 
 #define BUFFER_SIZE (32 * 1024)
 
-#ifdef atarist
-/* a little ditty here to do fread, filtering out '\r'. */
-
-int filtering_fread(where, how_big, how_many, f)
-char * where;
-int how_big;
-int how_many;
-FILE * f;
-{
-  int i, j, c;
-
-  for (i = 0 ; i < how_many ; )
-	{
-	for (j = 0 ; j < how_big ; )
-		{
-		c = fgetc(f);
-		if (c == EOF)
-			goto done;
-		if (c != '\r')
-			{
-			*where++ = c;
-			j++;
-			}
-		}
-	i++;
-	}
-done:
-  return(i);
-}
- 
-#else
- 
 static char in_buf[BUFFER_SIZE];
-  
-#endif
- 
 
 /*
  * We use static data: the data area is not sharable.
@@ -230,18 +195,12 @@ input_file_open (filename,pre)
 		as_perror ("Can't open %s for reading", file_name);
 		return;
 	}
-#if (!(defined(VMS) || defined(atarist) || defined(atariminix) || defined(CROSSHPUX)))
+#ifndef VMS
 	setbuffer(f_in,in_buf,BUFFER_SIZE);
 #endif /* VMS */
 	c=getc(f_in);
-#ifdef atarist
-	if(c == '\r') c = getc(f_in);
-#endif
 	if(c=='#') {	/* Begins with comment, may not want to preprocess */
 		c=getc(f_in);
-#ifdef atarist
-		if(c == '\r') c = getc(f_in);
-#endif
 		if(c=='N') {
 			fgets(buf,80,f_in);
 			if(!strcmp(buf,"O_APP\n"))
@@ -315,11 +274,7 @@ input_file_give_next_buffer (where)
 	}
 	size=BUFFER_SIZE-n;
   } else
-#ifdef atarist
-  size= filtering_fread(where,sizeof(char),BUFFER_SIZE,f_in);
-#else
-  size= fread(where,sizeof(char),BUFFER_SIZE,f_in);
-#endif
+	size= fread(where,sizeof(char),BUFFER_SIZE,f_in);
   if (size < 0)
     {
       as_perror ("Can't read from %s", file_name);

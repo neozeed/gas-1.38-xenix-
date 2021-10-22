@@ -54,11 +54,7 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 static char *	buffer_start;	/* -> 1st char of full buffer area. */
 static char *	partial_where;	/* -> after last full line in buffer. */
 static int	partial_size;	/* >=0. Number of chars in partial line in buffer. */
-#if (defined(atarist) || defined(atariminix))
-static char	save_source [2];	/* odd num fucks alignment? */
-#else
 static char	save_source [AFTER_SIZE];
-#endif
 				/* Because we need AFTER_STRING just after last */
 				/* full line, it clobbers 1st part of partial */
 				/* line. So we preserve 1st part of partial */

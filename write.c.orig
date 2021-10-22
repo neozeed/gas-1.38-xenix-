@@ -38,9 +38,6 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #include "write.h"
 #include "symbols.h"
 
-static relax_addressT	relax_align();
-
-#ifndef M_XENIX
 #ifdef SPARC
 #include "sparc.h"
 #endif
@@ -98,12 +95,11 @@ static long int		size_of_the_object_file; /* # bytes in object file. */
 
 static void	relax_segment();
 void		emit_segment();
+static relax_addressT	relax_align();
 static long int	fixup_segment();
 #if !defined(SPARC) && !defined(I860)
 static void		emit_relocations();
 #endif
-
-#endif /* M_XENIX */
 /*
  *			fix_new()
  *
@@ -152,7 +148,6 @@ fix_new (frag, where, size, add_symbol, sub_symbol, offset, pcrel)
   * seg_fix_rootP = fixP;
 }
 
-#ifndef M_XENIX
 void
 write_object_file()
 {
@@ -690,7 +685,6 @@ write_object_file()
   VMS_write_object_file(text_siz, data_siz, text_frag_root, data_frag_root);
 #endif	/* VMS */
 }				/* write_object_file() */
-#endif /* M_XENIX */
 
 /*
  *			relax_segment()
@@ -705,9 +699,7 @@ write_object_file()
  * these frag addresses may not be the same as final object-file addresses.
  */
 #ifndef	VMS
-#ifndef M_XENIX
 static
-#endif	/* not M_XENIX */
 #endif	/* not VMS */
 void
 relax_segment (segment_frag_root, segment_type)
@@ -1020,10 +1012,7 @@ relax_align (address, alignment)
 /*
  *			fixup_segment()
  */
-#ifndef M_XENIX 
-static
-#endif /* not M_XENIX */
-long int
+static long int
 fixup_segment (fixP, this_segment_type)
      register fixS *	fixP;
      int		this_segment_type; /* N_TYPE bits for segment. */
@@ -1150,9 +1139,6 @@ fixup_segment (fixP, this_segment_type)
 	}			/* if there was a + symbol */
       if (pcrel)
 	{
-#ifdef M_XENIX
-	  if (add_symbol_N_TYPE != N_UNDF)
-#endif
 	  add_number -=
 #ifndef NS32K
 		  size + 
@@ -1200,7 +1186,6 @@ fixup_segment (fixP, this_segment_type)
 }				/* fixup_segment() */
 
 
-#ifndef M_XENIX
 /* The sparc needs its own emit_relocations() */
 #if !defined(SPARC) && !defined(I860)
 /*
@@ -1261,7 +1246,6 @@ emit_relocations (fixP, segment_address_in_file)
 
 }
 #endif
-#endif /* M_XENIX */
 
 int
 is_dnrange(f1,f2)

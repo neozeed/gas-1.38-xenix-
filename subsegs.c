@@ -96,7 +96,11 @@ subsegs_begin()
   know( SEG_MAXIMUM_ORDINAL == SEG_DIFFERENCE );
   know( seg_name [(int) SEG_MAXIMUM_ORDINAL + 1] [0] == 0 );
 
+#ifdef M_XENIX
+  obstack_begin( &frags, 1000);
+#else
   obstack_begin( &frags, 5000);
+#endif /* M_XENIX */
   frchain_root = NULL;
   frchain_now  = NULL;		/* Warn new_subseg() that we are booting. */
 				/* Fake up 1st frag. */

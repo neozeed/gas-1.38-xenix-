@@ -74,13 +74,7 @@ FILE *scrub_file;
 int
 scrub_from_file()
 {
-#ifdef atarist
-	int c;
-	if((c = getc(scrub_file)) == '\r') c = getc(scrub_file);
-	return c;
-#else
 	return getc(scrub_file);
-#endif
 }
 
 void

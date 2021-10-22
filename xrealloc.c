@@ -18,7 +18,7 @@ along with GAS; see the file COPYING.  If not, write to
 the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 
 
-/* 
+/*
 
 NAME
 	xrealloc () - get more memory or bust
@@ -43,14 +43,15 @@ SEE ALSO
 
 #ifdef USG
 #include <malloc.h>
+#else
+#include <stdlib.h>
 #endif
 
 char   *
 xrealloc (ptr, n)
 register char  *ptr;
-long    n;
+long	n;
 {
-    char   *realloc ();
     void	error();
 
     if ((ptr = realloc (ptr, (unsigned)n)) == 0)

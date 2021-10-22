@@ -31,10 +31,6 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define setbuffer(a,b,c)
 #endif
 
-#ifdef CROSSHPUX
-#define setbuffer(a,b,c)
-#endif
-
 /*
  * CAPITALISED names are #defined.
  * "lowercaseH" is #defined if "lowercase.h" has been #include-d.
@@ -290,6 +286,7 @@ out_file_name;			/* name of emitted object file */
 
 COMMON int	need_pass_2;	/* TRUE if we need a second pass. */
 
+COMMON char *module_name;	/* Name given in the file directive */
 
 #endif				/* #ifdef asH */
 

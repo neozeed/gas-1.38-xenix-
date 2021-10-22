@@ -628,7 +628,6 @@ struct m68k_opcode m68k_opcodes[] =
 {"trapvc",	one(0054374),		one(0177777),		""},
 {"trapvs",	one(0054774),		one(0177777),		""},
 
-#if (!(CROSSATARI || atarist || atariminix))
 {"trapcc.w",	one(0052372),		one(0177777),		""},
 {"trapcs.w",	one(0052772),		one(0177777),		""},
 {"trapeq.w",	one(0053772),		one(0177777),		""},
@@ -662,8 +661,6 @@ struct m68k_opcode m68k_opcodes[] =
 {"trapt.l",	one(0050373),		one(0177777),		""},
 {"trapvc.l",	one(0054373),		one(0177777),		""},
 {"trapvs.l",	one(0054773),		one(0177777),		""},
-
-#endif /* !(CROSSATARI || atarist || atariminix) */
 
 {"trapv",	one(0047166),		one(0177777),		""},
 
@@ -1388,9 +1385,7 @@ struct m68k_opcode m68k_opcodes[] =
 
 /* Alternate mnemonics for SUN */
 
-#if (!(CROSSATARI || atarist || atariminix))
 {"jbsr",	one(0060400),		one(0177400),		"Bg"},
-#endif
 {"jbsr",	one(0047200),		one(0177700),		"!s"},
 {"jra",		one(0060000),		one(0177400),		"Bg"},
 {"jra",		one(0047300),		one(0177700),		"!s"},
@@ -1572,6 +1567,11 @@ struct m68k_opcode m68k_opcodes[] =
 {"pmove",	two(0xf000, 0x6000),	two(0xffc0, 0xffff),	"*sY8" },
 {"pmove",	two(0xf000, 0x6200),	two(0xffc0, 0xffff),	"Y8%s" },
 {"pmove",	two(0xf000, 0x6600),	two(0xffc0, 0xffff),	"Z8%s" },
+
+/* TT0/AC0, TT1/AC1 */
+{"pmove",	two(0xf000, 0x0800),	two(0xffc0, 0xfbff),	"*s38" },
+{"pmove",	two(0xf000, 0x0a00),	two(0xffc0, 0xfbff),	"38%s" },
+
 
 {"prestore",	one(0xf140),		one(0xffc0),		"&s"},
 {"prestore",	one(0xf158),		one(0xfff8),		"+s"},

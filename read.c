@@ -711,7 +711,8 @@ s_file()
 	int	length;
 
 	/* Some assemblers tolerate immediately following '"' */
-	if ( s = demand_copy_string( & length ) ) {
+	if ( s = demand_copy_C_string( & length ) ) {
+		module_name = s;
 		new_logical_line (s, -1);
 		demand_empty_rest_of_line();
 	}
@@ -1697,7 +1698,7 @@ grow_bignum()			/* Extend bignum by 1 char. */
 void	/* JF was static, but can't be if VAX.C is goning to use it */
 float_cons(float_type)		/* Worker to do .float etc statements. */
 				/* Clobbers input_line-pointer, checks end-of-line. */
-     register float_type;	/* 'f':.ffloat ... 'F':.float ... */
+     register int float_type;	/* 'f':.ffloat ... 'F':.float ... */
 {
   register char *	p;
   register char		c;

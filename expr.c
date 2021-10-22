@@ -527,7 +527,11 @@ clean_up_expression (expressionP)
        * It is faster to re-cancel them to NULL
        * than to check for this special case.
        */
-      if (expressionP -> X_subtract_symbol == expressionP -> X_add_symbol)
+      if (expressionP -> X_subtract_symbol == expressionP -> X_add_symbol
+          || (   expressionP->X_subtract_symbol
+	      && expressionP->X_add_symbol
+  	      && expressionP->X_subtract_symbol->sy_frag==expressionP->X_add_symbol->sy_frag
+	      && expressionP->X_subtract_symbol->sy_value==expressionP->X_add_symbol->sy_value))
 	{
 	  expressionP -> X_subtract_symbol	= NULL;
 	  expressionP -> X_add_symbol		= NULL;
