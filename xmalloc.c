@@ -39,6 +39,9 @@ SEE ALSO
 	malloc()
 
 */
+
+#include <stdio.h>
+#include <stdlib.h>
 #ifdef USG
 #include <malloc.h>
 #endif
@@ -48,11 +51,12 @@ char * xmalloc(n)
 {
   char *	retval;
 //  char *	malloc();
-  void	error();
+//  void	error();
 
   if ( ! (retval = malloc ((unsigned)n)) )
     {
-      error("virtual memory exceeded");
+      fprintf (stderr, "virtual memory exceeded");
+      exit (-1);
     }
   return (retval);
 }

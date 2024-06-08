@@ -36,6 +36,9 @@ extern char *alloca();
 #ifdef USG
 #define index strchr
 #endif
+#ifdef _WIN32
+#define alloca malloc
+#endif
 
 #include "as.h"
 #include "read.h"

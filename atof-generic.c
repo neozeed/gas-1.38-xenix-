@@ -32,6 +32,10 @@ the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.  */
 #define index strchr
 #endif
 
+#ifdef _WIN32
+#define alloca malloc
+#endif
+
 #define	FALSE (0)
 #define TRUE  (1)
 

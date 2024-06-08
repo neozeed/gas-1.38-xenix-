@@ -41,9 +41,13 @@ SEE ALSO
 	realloc ()
 */
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #ifdef USG
 #include <malloc.h>
 #endif
+
 
 char   *
 xrealloc (ptr, n)
@@ -51,10 +55,12 @@ register char  *ptr;
 long    n;
 {
 //    char   *realloc ();
-    void	error();
+//    void	error();
 
-    if ((ptr = realloc (ptr, (unsigned)n)) == 0)
-	error ("virtual memory exceeded");
+    if ((ptr = realloc (ptr, (unsigned)n)) == 0)   {
+	fprintf (stderr, "virtual memory exceeded");
+	exit(-1);
+	}
     return (ptr);
 }
 
